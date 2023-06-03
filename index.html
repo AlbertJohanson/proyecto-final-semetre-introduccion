@@ -19,7 +19,7 @@
         padding: 40px 0;
     }
 
-    section{
+    .info{
         max-width: 600px;
         margin: 0 auto;
         border-radius: 40px;
@@ -64,8 +64,197 @@
         margin-bottom: 20px;
     }
 </style>
+<script languaje=javascript>
+
+    function Activar(arreglo1, arreglo2){
+    
+      var Listado = arreglo1;
+      var Destino = arreglo2;
+      var len = Listado.length;
+    
+      for (var contador=0; contador<len; contador++){
+          Listado.options[contador].selected = true;
+      } 
+      AgregarFuenteDestino(Listado, Destino);
+    }
+    
+    function AgregarFuenteDestino(fuente, destino) {
+      ListaDestino=destino;
+      ListaFuente=fuente;
+      var opcion;
+      var len = ListaDestino.length;
+    
+      for(var i = 0; i < ListaFuente.length; i++) {
+        if ((ListaFuente.options[i] != null) && (ListaFuente.options[i].selected)) {
+        //Verifica si el valor ya existe en la lista destino
+              //Si no existe lo agrega.
+        var found = false;
+              for(var count = 0; count < len; count++) {
+            if (ListaDestino.options[count] != null) {
+              if (ListaFuente.options[i].text == ListaDestino.options[count].text) {
+                found = true;  
+                break;
+              }
+            }
+          }
+          if (found != true) {
+          opcion = new Option();
+           //ListaDestino.options[len].text = new Option(ListaFuente.options[i].text); 
+             opcion.text = ListaFuente.options[i].text;
+             opcion.value = ListaFuente.options[i].value;
+             ListaDestino.options[len]= opcion;
+            len++;
+          }
+        }
+      }
+      BorrarLista(fuente);  
+    }
+    
+    
+    function BorrarLista(destino) {
+      var ListaDestino=destino;
+      var len = ListaDestino.options.length;
+      for(var i = (len-1); i >= 0; i--) {
+        if ((ListaDestino.options[i] != null) && (ListaDestino.options[i].selected == true)) {
+             ListaDestino.options[i] = null;
+        }
+      }
+    }
+    
+    
+    
+    
+    
+    function verificacion (){
+      
+        var Arreglo1 = Array();
+        var Arreglo2 = Array();
+        var contador;
+    
+        for (contador = 0; contador < document.forma.combo_listacursos_noasignados.length; contador++) {
+            Arreglo1[contador] = document.forma.combo_listacursos_noasignados.options[contador].value;
+        }
+    
+    
+    
+       /vNOASIGNADOS ES OBTENIDO EN E_ASIGNAPERMISOS PARA ELIMINAR/
+        document.forma.vNOASIGNADOS.value  = Arreglo1.join(";");
+        
+    
+       /vASIGNADOS ES OBTENIDO EN RESULTAASIGNAPERMISOS PARA INSERTAR/
+    
+        for (contador = 0; contador < document.forma.combo_listacursos_asignados.length; contador++) {
+            Arreglo2[contador] = document.forma.combo_listacursos_asignados.options[contador].value;
+        }
+    
+        
+        document.forma.vASIGNADOS.value = Arreglo2.join(";");  
+      
+            document.forma.submit();
+      
+    }
+    
+    function AsignaOpcion(opcion){
+    
+    
+    
+    document.forma.mensaje.value = " ";
+    if (opcion =="1"){
+    /Se activan los campos necesarios para la opcion de ingresar o modificar/
+        document.forma.opcion.value =opcion;            
+        
+        document.forma.combo_listacursos_noasignados.disabled = false;
+        document.forma.combo_listacursos_asignados.disabled = false;		
+    
+        document.forma.vASIGNADOS.value = "";
+        
+        document.forma.vNOASIGNADOS.value = "";	
+    
+        
+        document.forma.mensaje.value = " ";
+    
+        document.forma.B_AGREGAR.disabled = false;  	
+        document.forma.B_QUITAR.disabled = false;
+        document.forma.B_ATODOS.disabled = false;            
+        document.forma.B_QTODAS.disabled = false;        
+    
+        
+        document.forma.Ingresar.disabled = true;
+    
+        document.forma.Aceptar.disabled = false;
+        document.forma.Cancelar.disabled = false;
+        
+        return;	
+    }
+    
+    
+    if (opcion =="5"){
+    /Se activan los campos necesarios para la opcion aceptar/
+        document.forma.hdnempresa.disabled = false;
+    
+    
+        if (verificacion() == true){
+            document.forma.submit();
+        }
+        else
+            return(false);
+    
+    }
+    
+    if (opcion=="6"){
+    /Se activan los campos necesarios para la opcion de cancelar/
+        document.forma.combo_empresa.disabled = true;
+        
+        document.forma.combo_listacursos_noasignados.disabled = true;
+        document.forma.combo_listacursos_asignados.disabled = true;			
+    
+    
+        document.forma.vASIGNADOS.value = "";
+        
+        document.forma.vNOASIGNADOS.value = "";	
+        
+    
+        document.forma.mensaje.value = "";
+    
+        document.forma.B_AGREGAR.disabled = true;  	
+        document.forma.B_QUITAR.disabled = true;
+        document.forma.B_ATODOS.disabled = true;            
+        document.forma.B_QTODAS.disabled = true;        
+    
+        
+        document.forma.Ingresar.disabled = false;
+    
+        document.forma.Aceptar.disabled = true;
+        document.forma.Cancelar.disabled = true;
+        
+        return;	
+    }
+    
+    
+    }
+    
+    function asigna_empresa() {
+    var longitud=document.forma.combo_empresa.length;
+    var i=0;
+    var encontrado=0;
+    
+        while (i<longitud && encontrado==0) {
+            if(document.forma.combo_empresa.options[i].selected==true){
+            
+            document.forma.hdnempresa.value =document.forma.combo_empresa.options[i].value;
+            encontrado=1;
+            }
+            i++;
+        }	
+        
+        document.forma.mensaje.value = " ";
+        
+            //open("paginaParaAsignacion.xxx?parametro_empresa="+ document.forma.hdnempresa.value,"_self");	
+    }        
+    
+    </script>
 <body>
-    <section>
+    <section class="info">
         <h1>Administracion de cursos</h1>
         <span>Ingrese sus datos por favor</span>
 
@@ -118,6 +307,122 @@
                 <input type="submit" value="Submit">
               </form>
         </div>
+    </section>
+
+    <section>
+        <FORM NAME="forma" ACTION="" onsubmit="return verificacion();" METHOD=post>
+    
+            <br>
+            <br><br><br><br><br>
+            <CENTER><TABLE bgcolor=darkblue WIDTH="60%" CELLPADDING= "1">
+            
+            <TR>
+            
+            <td align=middle><center><B><font size="3" face="Verdana" color=White><strong>Asignaci&oacute;n de Cursos del Semestre</strong></font></B></center></td>
+            </TR>
+            </TABLE>
+            <CENTER><TABLE BORDER=0 WIDTH="60%" CELLPADDING= "0">
+            <TR>
+            <TD COLSPAN = 2>
+              <div align="center">
+                <center>
+            <CENTER><TABLE BORDER=0 WIDTH="100%" CELLPADDING= "0">
+                <tr>
+            
+                  <td width="30%" height="1" bgcolor=darkblue>
+                    <p align="center">
+                    <b><font size="2" face="Verdana" color=White><b>Cursos Disponibles</font></b>
+                    </p>
+                </td>
+                  <td width="13%" height="1" bgcolor=darkblue>
+                  &nbsp;
+                  </td>  
+                  <td width="30%" colspan="1" height="1" bgcolor=darkblue>
+                  <p align="center"><font size="2" face="Verdana" color=White><b>Cursos Asignados</font></b>
+                  </p>
+                  </tr>
+                <tr>    
+               <TD ALIGN=left bgcolor= lightgoldenrodyellow>
+                 <select id=combo_listacursos_noasignados  NAME=combo_listacursos_noasignados style = "background - color =lightgoldenrodyellow" size = 10 multiple>
+              
+               
+                 <option selected value= "1" > 001 - Introducci&oacute;n a los Sistemas </option>
+                 <option selected value= "2" > 002 - Contabilidad </option>
+                 <option selected value= "3" > 003 - L&oacute;gica de Sistemas </option>
+                 <option selected value= "4" > 004 - Matem&aacute;tica B&aacute;sica </option>	 
+                 <option selected value= "5" > 005 - Metodolog&iacute;a de la Investigaci&oacute;n </option>	 
+            
+            </select>
+                        
+               
+               </TD>
+                   
+              <center>
+            
+                  <td  width="13%" bgcolor= lightgoldenrodyellow  align="right" height="23">
+            
+                    <p align="center"><font color="#000080"><input type="button" value="Agregar" disabled name="B_AGREGAR"   style="background: darkblue; color: white; border-style: solid; border-color: #000080; backgroundColor: 'darkblue'" onclick="AgregarFuenteDestino(document.forma.combo_listacursos_noasignados, forma.combo_listacursos_asignados)" tabindex="9"></font></p>
+                    <p align="center"><input type="button" value="Eliminar" disabled name="B_QUITAR"  style="background: darkblue; color: white; border-style: solid; border-color: #000080; backgroundColor: 'darkblue'" onclick="AgregarFuenteDestino(document.forma.combo_listacursos_asignados, forma.combo_listacursos_noasignados)" tabindex="10"></p>
+                    <p align="center"><input type="button" value="Agregar Todas" disabled name="B_ATODOS"  style="background: darkblue; color: white; border-style: solid; border-color: #000080; backgroundColor: 'darkblue'" onclick="Activar(document.forma.combo_listacursos_noasignados, document.forma.combo_listacursos_asignados)" tabindex="11"></p>
+                    <p align="center"><input type="button" value="Eliminar Todas" disabled name="B_QTODAS"  style="background: darkblue; color: white; border-style: solid; border-color: #000080; backgroundColor: 'darkblue'" onclick="Activar(document.forma.combo_listacursos_asignados, document.forma.combo_listacursos_noasignados)"  tabindex="12"></p>
+                  </td>
+              </center>
+                    
+               <TD ALIGN=left bgcolor= lightgoldenrodyellow>
+               <select id=combo_listacursos_asignados disabled NAME=combo_listacursos_asignados style = 'background - color =lightgoldenrodyellow' size = 10 multiple>
+                 </option>
+            </select>
+            
+            
+               
+               </TD>
+                </tr>
+            </table>    
+                </center>
+              </div>
+              
+            </TABLE>
+            <CENTER><TABLE  BORDER=1 WIDTH="50%" CELLPADDING= "0">
+            <TR>   
+               <TD ALIGN=middle><INPUT TYPE=button style="COLOR: white; BACKGROUND-COLOR: darkblue" NAME="Ingresar" Value="        Nuevo         " onclick="AsignaOpcion(1);"></TD>
+               <TD ALIGN=middle colspan=2>
+               <INPUT disabled TYPE=button style="COLOR: white; BACKGROUND-COLOR: darkblue" NAME="Aceptar" Value="         Confirmar Asignaci&oacute;n         " onclick="verificacion ();">
+               </TD> 
+               <TD ALIGN=middle colspan=2><INPUT disabled TYPE=button style="COLOR: white; BACKGROUND-COLOR: darkblue" NAME="Cancelar" Value="         Cancelar         " onclick="AsignaOpcion(6);">
+                <INPUT TYPE=hidden NAME="opcion" value = "2">
+               
+               </TD>
+            </TR>   
+               
+            </TABLE></CENTER>
+            </TR>
+            </table>
+            </center>
+            </div>
+            
+            
+            
+            <br>
+            <font size="2" color= darkblue face="Verdana"><b>
+            <INPUT TYPE=hidden NAME="hdnempresa" value ="">
+            
+            <INPUT TYPE=hidden NAME="mensaje" value ="">
+            
+            <INPUT TYPE="hidden" NAME="vNOASIGNADOS" >
+            <INPUT TYPE="hidden" NAME="vASIGNADOS">
+            <br>
+              
+            
+            
+            </FORM>
+            <form>
+            <input type="text" name="codigo_de_proyecto" placeholder="Universidad Mariano Galvez Sede Central">
+            <input type="text" name="descripcion" placeholder="Sede Central ubicado en la Zona 2 ciudad Guatemala">
+            <input type="text" name="codigo_de_tipo_de_proyecto" placeholder="El trabajo bien hecho">
+            
+        </form>
+        </CENTER>
+            
     </section>
 </body>
 </html>
