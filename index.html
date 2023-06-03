@@ -4,9 +4,164 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Administracion de cursos</title>
 </head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        background-color: #ffffff;
+        font-family: 'Roboto', sans-serif;
+        padding: 40px 0;
+    }
+
+    section{
+        max-width: 600px;
+        margin: 0 auto;
+        border-radius: 40px;
+        background-color: rgb(0, 52, 76);
+        padding: 40px 0;
+        -webkit-box-shadow: 0px 0px 8px -1px rgba(0,0,0,0.75);
+        -moz-box-shadow: 0px 0px 8px -1px rgba(0,0,0,0.75);
+        box-shadow: 0px 0px 8px -1px rgba(0,0,0,0.75);
+    }
+
+    h1,
+    h4{
+        text-align: center;
+        margin: 20px 0;
+        color: #ffffff;
+    }
+
+    span{
+        display: block;
+        text-align: center;
+        margin-bottom: 20px;
+        color: #ffffff;
+    }
+
+    form{
+        padding: 0 40px 40px 40px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    form label{
+        color: #ffffff;
+        margin-bottom: 10px;
+        text-align: center;
+        margin-top: 40px;
+    }
+
+    form input{
+        padding: 20px;
+        border-radius: 10px;
+        border: none;
+        margin-bottom: 20px;
+    }
+</style>
 <body>
-    
+    <section>
+        <h1>Administracion de cursos</h1>
+        <span>Ingrese sus datos por favor</span>
+
+        <div>
+            <form>
+                <h4>Ingrese los datos del estudiante</h4>
+
+                <label for="nombre">Nombre</label>
+                <input type="text" name="nombre" id="nombre" placeholder="Ingrese su nombre">
+
+                <label for="apellido">Apellido</label>
+                <input type="text" name="apellido" id="apellido" placeholder="Ingrese su apellido">
+
+                <label for="dpi">DPI</label>
+                <input type="text" name="dpi" id="dpi" placeholder="Ingrese su DPI">
+
+                <label for="carnet">Carnet</label>
+                <input type="text" name="carnet" id="carnet" placeholder="Ingrese su carnet">
+
+                <label for="direccion_estudian">Direccion del Estudiante</label>
+                <input type="text" name="direccion_estudian" id="direccion_estudian" placeholder="Ingrese su direccion">
+
+                <label for="telefono">Telefono</label>
+                <input type="text" name="telefono" id="telefono" placeholder="Ingrese su telefono">
+
+            <!--Forma de pago de tarjeta-->
+            
+
+
+                <h4>Ingrese los datos de la tarjeta</h4>
+
+                <label for="nombre">Nombre</label>
+                <input type="text" name="nombre" placeholder="Nombre">
+
+                <label for="email">Email</label>
+                <input type="email" name="email" placeholder="Ingrese su Email">
+
+                <label for="cantidad">Cantidad</label>
+                <input type="number" name="cantidad" placeholder="Cantidad">
+
+                <label for="card_number">Numero de la Tarjeta</label>
+                <input type="text" name="card_number" placeholder="Numero de la Tarjeta">
+
+                <label for="expiration_date">Fecha de Expiracion</label>
+                <input type="text" name="expiration_date" placeholder="Fecha de Expiracion">
+
+                <label for="cvv">CVV</label>
+                <input type="text" name="cvv" placeholder="CVV">
+
+                <input type="submit" value="Submit">
+              </form>
+        </div>
+    </section>
 </body>
 </html>
+<script>
+    //get name, apellido and carnet field values in the form and show a welcome message
+
+    const form = document.querySelector('form');
+    const nombre = document.querySelector('#nombre');
+    const apellido = document.querySelector('#apellido');
+    const carnet = document.querySelector('#carnet');
+    
+    //generate a meesaage
+    const generateMessage = (name, lastname, carnet) => {
+        return `Bienvenido ${name} ${lastname} con carnet ${carnet}`;
+    }
+
+    //show the message
+    const showMessage = (message) => {
+        const div = document.createElement('div');
+        div.appendChild(document.createTextNode(message));
+        div.classList.add('message');
+        document.querySelector('section').appendChild(div);
+    }
+
+    //add styles to the message
+    const addStyles = () => {
+        const message = document.querySelector('.message');
+        message.style.backgroundColor = '#ffffff';
+        message.style.color = '#000000';
+        message.style.padding = '20px';
+        message.style.textAlign = 'center';
+        message.style.marginTop = '20px';
+        message.style.borderRadius = '10px';
+    }
+
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const message = generateMessage(nombre.value, apellido.value, carnet.value);
+        showMessage(message);
+        addStyles();
+    });
+
+
+
+
+</script>
